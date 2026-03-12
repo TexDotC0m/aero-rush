@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aero Rush</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- Main Menu -->
+        <div id="main-menu" class="ui-screen active">
+            <h1 class="game-title">Aero Rush</h1>
+            <p class="subtitle">Tap or Space to Fly</p>
+            <button id="play-btn" class="glass-btn">PLAY</button>
+        </div>
+
+        <!-- HUD -->
+        <div id="hud" class="ui-screen hidden">
+            <div class="score-display" id="score">0</div>
+            
+            <div class="fuel-container">
+                <div class="fuel-icon">⛽</div>
+                <div class="fuel-bar-bg">
+                    <div class="fuel-bar-fill" id="fuel-fill"></div>
+                </div>
+            </div>
+
+            <div id="wind-warning" class="wind-alert hidden">
+                <span class="wind-icon">💨</span> <span id="wind-text">Wind Warning!</span>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div id="game-over" class="ui-screen hidden">
+            <h2 class="game-over-title">Game Over</h2>
+            <div class="score-card glass-panel">
+                <div class="score-row">
+                    <span>Score:</span>
+                    <span id="final-score">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Best:</span>
+                    <span id="best-score">0</span>
+                </div>
+            </div>
+            <button id="restart-btn" class="glass-btn">Restart</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
