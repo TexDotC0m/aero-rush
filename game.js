@@ -429,8 +429,8 @@ function updateGame(dt) {
         }
     }
 
-    // Fog Logic - After 5 points
-    if (score >= 5) {
+    // Fog Logic - After 30 points
+    if (score >= 30) {
         if (fogAlpha < 0.7) {
             fogAlpha += 0.1 * dt; // Gradually thicken the fog
         }
