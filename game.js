@@ -11,6 +11,7 @@ const bestScoreDisplay = document.getElementById('best-score');
 const fuelFill = document.getElementById('fuel-fill');
 const windWarning = document.getElementById('wind-warning');
 const windText = document.getElementById('wind-text');
+const fogWarning = document.getElementById('fog-warning');
 const btnPlay = document.getElementById('play-btn');
 const btnRestart = document.getElementById('restart-btn');
 
@@ -39,8 +40,9 @@ let baseSpeed = 300; // pixels per second (horizontal equivalent for obstacles)
 let currentSpeed = baseSpeed;
 let fuel = 100;
 const MAX_FUEL = 100;
-const FUEL_DRATE = 10; // Fuel per second
+const FUEL_DRATE = 5; // Reduced from 10 to make fuel last longer
 let frameCount = 0;
+let fogAlpha = 0; // Current fog opacity
 
 // Environment (Wind)
 let windActive = false;
@@ -299,6 +301,8 @@ function resetGame() {
     nextWindTime = getRandom(5, 15);
     updateHUD();
     windWarning.classList.add('hidden');
+    fogWarning.classList.add('hidden');
+    fogAlpha = 0;
     spawnBackgroundClouds(10); // Pre-fill background
 }
 
@@ -425,6 +429,17 @@ function updateGame(dt) {
         }
     }
 
+    // Fog Logic - After 5 points
+    if (score >= 5) {
+        if (fogAlpha < 0.7) {
+            fogAlpha += 0.1 * dt; // Gradually thicken the fog
+        }
+        fogWarning.classList.remove('hidden');
+    } else {
+        fogAlpha = 0;
+        fogWarning.classList.add('hidden');
+    }
+
     // Background Clouds
     bgCloudTimer += dt;
     if (bgCloudTimer > 1) { 
@@ -500,6 +515,22 @@ function drawGame() {
 
     // Draw Player
     player.draw(ctx);
+
+    // Draw Fog Overlay
+    if (fogAlpha > 0) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${fogAlpha})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Add a slight "misty" texture by reducing visibility of the center
+        const gradient = ctx.createRadialGradient(
+            canvas.width/2, canvas.height/2, 50,
+            canvas.width/2, canvas.height/2, canvas.width/1.2
+        );
+        gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
+        gradient.addColorStop(1, `rgba(255, 255, 255, ${fogAlpha * 0.5})`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 // Input Handling
